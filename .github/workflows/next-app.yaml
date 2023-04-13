@@ -1,0 +1,135 @@
+on:
+  workflow_call:
+    inputs:
+      app:
+        required: true
+        type: string
+      base-path:
+        required: true
+        type: string
+
+jobs:
+  test-and-verify:
+    name: Test and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+      - run: yarn lint
+      - run: yarn test
+
+  build-dev:
+    if: ${{ !startsWith(github.ref_name, 'demo') }}
+    name: Build for dev
+    runs-on: ubuntu-latest
+    permissions:
+      packages: "write"
+      contents: "read"
+      id-token: "write"
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ inputs.app }}
+          env: dev
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-dev:
+    if: ${{ !startsWith(github.ref_name, 'demo') }}
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    needs: [test-and-verify, build-dev]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-dev.yaml
+          VAR: image=${{ needs.build-dev.outputs.image }},version=${{ github.sha }}
+
+  build-demo:
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
+    name: Build for demo
+    runs-on: ubuntu-latest
+    permissions:
+      packages: "write"
+      contents: "read"
+      id-token: "write"
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ inputs.app }}
+          env: demo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-demo-main:
+    if: github.ref_name == 'main'
+    name: Deploy main to demo
+    runs-on: ubuntu-latest
+    needs: [test-and-verify, build-demo]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-demo.yaml
+          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ inputs.app }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ inputs.app }},replicas=1,branchState=alive
+
+  deploy-demo-branch:
+    if: startsWith(github.ref_name, 'demo')
+    name: Deploy branch to demo
+    runs-on: ubuntu-latest
+    needs: [test-and-verify, build-demo]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gacts/github-slug@v1
+        id: slug
+        with:
+          to-slug: ${{ inputs.app }}-${{ github.ref_name }}
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-demo.yaml
+          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ steps.slug.outputs.slug }},replicas=1,branchState=alive
+
+  build-prod:
+    if: github.ref_name == 'main'
+    name: Build for prod
+    runs-on: ubuntu-latest
+    permissions:
+      packages: "write"
+      contents: "read"
+      id-token: "write"
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ inputs.app }}
+          env: prod
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-prod:
+    if: github.ref_name == 'main'
+    name: Deploy to prod
+    runs-on: ubuntu-latest
+    needs: [test-and-verify, build-prod]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/nais-prod.yaml
+          VAR: image=${{ needs.build-prod.outputs.image }},version=${{ github.sha }}

@@ -1,0 +1,26 @@
+on:
+  workflow_call:
+    inputs:
+      app:
+        required: true
+        type: string
+      base-path:
+        required: true
+        type: string
+
+jobs:
+  delete-demo-app:
+    if: startsWith(github.event.ref, 'demo')
+    name: Delete branch dev-gcp
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: gacts/github-slug@v1
+        id: slug
+      - name: Scale down dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais-dev-demo.yaml
+          VAR: image=ghcr.io/navikt/${{ inputs.app }}:latest,ingress=https://${{ inputs.app }}-${{ steps.slug.outputs.branch-name-slug }}.ekstern.dev.nav.no/${{ inputs.base-path }},appname=${{ inputs.app}}-${{ steps.slug.outputs.branch-name-slug }},replicas=0,branchState=deleted
