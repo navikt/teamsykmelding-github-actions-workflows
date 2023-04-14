@@ -26,10 +26,13 @@ runs:
   using: "composite"
   steps:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
+      with:
+        ORG_GRADLE_PROJECT_githubUser: x-access-token
+        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
     - name: Build jar
       shell: bash
       run: |
-            ./gradlew shadowJar -x test PgithubUser=x-access-token -PgithubPassword=${{ inputs.github_token }}
+            ./gradlew shadowJar -x test
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
