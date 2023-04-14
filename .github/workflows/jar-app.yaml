@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
-        shell: bash
-        run: |
-          ./gradlew test
+      - run: ./gradlew test
 
   build-dev:
     if: github.ref_name != 'main'
