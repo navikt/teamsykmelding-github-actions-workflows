@@ -43,11 +43,15 @@ jobs:
     needs: [test-and-verify, build-dev]
     steps:
       - uses: actions/checkout@v3
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
+        with:
+          app: ${{ inputs.app }}
+          env: dev
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-dev.yaml
+          RESOURCE: nais/configmap.yaml,nais/nais-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }},version=${{ github.sha }}
 
   build-demo:
@@ -76,11 +80,15 @@ jobs:
     needs: [test-and-verify, build-demo]
     steps:
       - uses: actions/checkout@v3
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
+        with:
+          app: ${{ inputs.app }}
+          env: demo
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-demo.yaml
+          RESOURCE: nais/configmap.yaml,nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ inputs.app }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ inputs.app }},replicas=1,branchState=alive
 
   deploy-demo-branch:
@@ -94,11 +102,15 @@ jobs:
         id: slug
         with:
           to-slug: ${{ inputs.app }}-${{ github.ref_name }}
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
+        with:
+          app: ${{ inputs.app }}
+          env: demo
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-demo.yaml
+          RESOURCE: nais/configmap.yaml,nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ steps.slug.outputs.slug }},replicas=1,branchState=alive
 
   build-prod:
@@ -127,9 +139,13 @@ jobs:
     needs: [test-and-verify, build-prod]
     steps:
       - uses: actions/checkout@v3
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
+        with:
+          app: ${{ inputs.app }}
+          env: prod
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: nais/nais-prod.yaml
+          RESOURCE: nais/configmap.yaml,nais/nais-prod.yaml
           VAR: image=${{ needs.build-prod.outputs.image }},version=${{ github.sha }}
