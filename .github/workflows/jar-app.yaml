@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
-      - run: ./gradlew test PgithubUser=x-access-token -PgithubPassword=${{ inputs.github_token }}
+      - run: ./gradlew test PgithubUser=x-access-token -PgithubPassword=${{ secrets.GITHUB_TOKEN }}
 
   build-dev:
     if: github.ref_name != 'main'
