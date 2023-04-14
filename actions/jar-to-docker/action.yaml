@@ -27,12 +27,9 @@ runs:
   steps:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
     - name: Build jar
-      env:
-        ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       shell: bash
       run: |
-            ./gradlew shadowJar -x test
+            ./gradlew shadowJar -x test PgithubUser=x-access-token -PgithubPassword=${{ inputs.github_token }}
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
