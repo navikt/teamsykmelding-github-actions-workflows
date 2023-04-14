@@ -22,8 +22,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup
-      uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
+    - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
     - name: Build jar
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
