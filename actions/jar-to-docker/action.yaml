@@ -28,7 +28,7 @@ runs:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
       with:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
     - name: Build jar
       shell: bash
       run: |
