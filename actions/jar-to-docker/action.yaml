@@ -14,6 +14,9 @@ inputs:
   project_id:
     required: true
     type: string
+  github_token:
+    required: true
+    type: string
 outputs:
   image:
     description: "Docker image in GAR"
@@ -26,7 +29,7 @@ runs:
     - name: Build jar
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       shell: bash
       run: |
             ./gradlew shadowJar -x test
