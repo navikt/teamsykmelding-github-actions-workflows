@@ -1,0 +1,43 @@
+name: "Builds a jar, creates a docker image and uploads it to GAR"
+description: "Builds a jar, creates a docker image and uploads it to GAR"
+
+inputs:
+  app:
+    required: true
+    type: string
+  env:
+    required: true
+    type: string
+  identity_provider:
+    required: true
+    type: string
+  project_id:
+    required: true
+    type: string
+outputs:
+  image:
+    description: "Docker image in GAR"
+    value: ${{ steps.docker-build-push.outputs.image }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup
+      uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
+    - name: Build jar
+      env:
+        ORG_GRADLE_PROJECT_githubUser: x-access-token
+        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
+      run: |
+            ./gradlew shadowJar -x test
+    - name: Push docker image to GAR
+      uses: nais/docker-build-push@v0
+      id: docker-build-push
+      with:
+        team: teamsykmelding
+        identity_provider: ${{ inputs.identity_provider }}
+        project_id: ${{ inputs.project_id }}
+        image_suffix: ${{ inputs.env }}
+        build_args: |
+            ENV=${{ inputs.env }}

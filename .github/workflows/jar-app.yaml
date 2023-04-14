@@ -1,0 +1,83 @@
+on:
+  workflow_call:
+    inputs:
+      app:
+        required: true
+        type: string
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
+        shell: bash
+        run: |
+          ./gradlew test
+
+  build-dev:
+    if: github.ref_name != 'main'
+    name: Build for dev
+    runs-on: ubuntu-latest
+    permissions:
+      packages: "write"
+      contents: "read"
+      id-token: "write"
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@gradlecached
+        id: build-and-publish
+        with:
+          app: ${{ inputs.app }}
+          env: dev
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-dev:
+    if: github.ref_name != 'main'
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    needs: [test, build-dev]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: naiserator-dev.yaml
+          VAR: image=${{ needs.build-dev.outputs.image }}
+
+
+  build-prod:
+    if: github.ref_name == 'main'
+    name: Build for prod
+    runs-on: ubuntu-latest
+    permissions:
+      packages: "write"
+      contents: "read"
+      id-token: "write"
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@gradlecached
+        id: build-and-publish
+        with:
+          app: ${{ inputs.app }}
+          env: prod
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-prod:
+    if: github.ref_name == 'main'
+    name: Deploy to prod
+    runs-on: ubuntu-latest
+    needs: [test, build-prod]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: naiserator-prod.yaml
+          VAR: image=${{ needs.build-prod.outputs.image }}
