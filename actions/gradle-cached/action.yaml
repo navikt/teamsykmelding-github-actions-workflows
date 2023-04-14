@@ -1,0 +1,28 @@
+name: "Installs java, validates gradle wrapper, installs gradle dependencies with cache"
+description: "Installs java, validates gradle wrapper, installs gradle dependencies with cache"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - name: Gradle wrapper validation
+      uses: gradle/wrapper-validation-action@v1.0.6
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - name: Setup gradle dependency cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/.*gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
