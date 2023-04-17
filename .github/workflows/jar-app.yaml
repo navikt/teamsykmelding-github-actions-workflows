@@ -10,7 +10,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
       - run: ./gradlew test
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
@@ -27,7 +27,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@gradlecached
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -62,7 +62,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@gradlecached
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
