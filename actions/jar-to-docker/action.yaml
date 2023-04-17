@@ -26,10 +26,10 @@ runs:
   using: "composite"
   steps:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@gradlecached
-      with:
+    - name: Build jar
+      env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
-    - name: Build jar
       shell: bash
       run: |
             ./gradlew shadowJar -x test
