@@ -22,5 +22,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais-dev-demo.yaml
+          RESOURCE: nais/nais-demo.yaml
           VAR: image=ghcr.io/navikt/${{ inputs.app }}:latest,ingress=https://${{ inputs.app }}-${{ steps.slug.outputs.branch-name-slug }}.ekstern.dev.nav.no/${{ inputs.base-path }},appname=${{ inputs.app}}-${{ steps.slug.outputs.branch-name-slug }},replicas=0,branchState=deleted
