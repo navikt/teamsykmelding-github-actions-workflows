@@ -14,6 +14,9 @@ inputs:
   project_id:
     required: true
     type: string
+  NPM_AUTH_TOKEN:
+    required: true
+    type: string
 outputs:
   image:
     description: "Docker image in GAR"
@@ -23,6 +26,8 @@ runs:
   using: "composite"
   steps:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+      with:
+        NPM_AUTH_TOKEN: ${{ inputs.NPM_AUTH_TOKEN }}
     - name: Copy appropriate env file to root
       shell: bash
       run: |

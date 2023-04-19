@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn lint
       - run: yarn test
 
@@ -35,6 +37,7 @@ jobs:
           env: dev
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-dev:
     if: ${{ !startsWith(github.ref_name, 'demo') }}
@@ -72,6 +75,7 @@ jobs:
           env: demo
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-demo-main:
     if: github.ref_name == 'main'
@@ -131,6 +135,7 @@ jobs:
           env: prod
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-prod:
     if: github.ref_name == 'main'
