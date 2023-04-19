@@ -129,6 +129,12 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais/configmap.yaml,nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ steps.slug.outputs.slug }},replicas=1,branchState=alive
+      - name: "Post link"
+        run: |
+          URL="https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }}"
+          echo "### Branch deployed to demo!
+          [${URL}](${URL})
+          " >> $GITHUB_STEP_SUMMARY
 
   build-prod:
     if: github.ref_name == 'main'
