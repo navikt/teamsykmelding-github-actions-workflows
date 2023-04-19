@@ -9,6 +9,19 @@ on:
         type: string
 
 jobs:
+  codeql-analysis:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: github/codeql-action/init@v2
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
   test-and-verify:
     name: Test and lint
     runs-on: ubuntu-latest
