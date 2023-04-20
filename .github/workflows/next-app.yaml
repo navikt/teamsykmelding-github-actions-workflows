@@ -55,10 +55,17 @@ jobs:
   deploy-dev:
     if: ${{ !startsWith(github.ref_name, 'demo') }}
     name: Deploy to dev
+    environment:
+      name: development
+      url: ${{ steps.get-ingress.outputs.result }}
     runs-on: ubuntu-latest
     needs: [test-and-verify, build-dev]
     steps:
       - uses: actions/checkout@v3
+      - id: get-ingress
+        uses: mikefarah/yq@v4.33.3
+        with:
+          cmd:  yq '.spec.ingresses[0]' nais/nais-dev.yaml
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
         with:
           app: ${{ inputs.app }}
@@ -159,10 +166,17 @@ jobs:
   deploy-prod:
     if: github.ref_name == 'main'
     name: Deploy to prod
+    environment:
+      name: production
+      url: ${{ steps.get-ingress.outputs.result }}
     runs-on: ubuntu-latest
     needs: [test-and-verify, build-prod]
     steps:
       - uses: actions/checkout@v3
+      - id: get-ingress
+        uses: mikefarah/yq@v4.33.3
+        with:
+          cmd:  yq '.spec.ingresses[0]' nais/nais-prod.yaml
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/env-to-configmap@main
         with:
           app: ${{ inputs.app }}
