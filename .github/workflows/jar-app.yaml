@@ -122,7 +122,6 @@ jobs:
     needs: [test, build-prod]
     steps:
       - uses: actions/checkout@v3
-        shell: bash
       - run: if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE_PROD=naiserator-prod.yaml" >> $GITHUB_ENV; else echo "RESOURCE_PROD=${{ inputs.app }}/naiserator-prod.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
