@@ -13,7 +13,12 @@ on:
       docker_context:
         required: true
         type: string
-
+      naiserator_dev:
+        required: true
+        type: string
+      naiserator_prod:
+        required: true
+        type: string
 jobs:
   analyze:
     name: Analyze
@@ -83,12 +88,11 @@ jobs:
     needs: [test, build-dev]
     steps:
       - uses: actions/checkout@v3
-      - run: if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE_DEV=naiserator-dev.yaml" >> $GITHUB_ENV; else echo "RESOURCE_DEV=${{ inputs.app }}/naiserator-dev.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: ${{ env.RESOURCE_DEV }}
+          RESOURCE: ${{ input.naiserator_dev }}
           VAR: image=${{ needs.build-dev.outputs.image }}
 
 
@@ -122,10 +126,9 @@ jobs:
     needs: [test, build-prod]
     steps:
       - uses: actions/checkout@v3
-      - run: if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE_PROD=naiserator-prod.yaml" >> $GITHUB_ENV; else echo "RESOURCE_PROD=${{ inputs.app }}/naiserator-prod.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: ${{ env.RESOURCE_PROD }}
+          RESOURCE: ${{ input.naiserator_prod }}
           VAR: image=${{ needs.build-prod.outputs.image }}
