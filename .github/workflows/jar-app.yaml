@@ -37,7 +37,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew :${{ inputs.app }}:shadowJar -x test; else ./gradlew shadowJar -x test; fi
+      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew shadowJar -x test; else ./gradlew :${{ inputs.app }}:shadowJar -x test; fi
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
-      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew :${{ inputs.app }}:test; else ./gradlew test; fi
+      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew test; else ./gradlew :${{ inputs.app }}:test; fi
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
