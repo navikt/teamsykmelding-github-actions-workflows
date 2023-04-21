@@ -83,9 +83,7 @@ jobs:
     needs: [test, build-dev]
     steps:
       - uses: actions/checkout@v3
-        shell: bash
-        run: |
-          if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-dev.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-dev.yaml" >> $GITHUB_ENV; fi
+      - run: if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-dev.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-dev.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -125,8 +123,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         shell: bash
-        run: |
-          if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-prod.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-prod.yaml" >> $GITHUB_ENV; fi
+      - run: if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-prod.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-prod.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
