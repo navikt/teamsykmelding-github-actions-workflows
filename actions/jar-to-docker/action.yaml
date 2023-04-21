@@ -41,7 +41,7 @@ runs:
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       shell: bash
       run: |
-        if [[ ${{ inputs.subprojects }} ]]; then ./gradlew shadowJar -x test; else ./gradlew :${{ inputs.app }}:shadowJar -x test; fi
+        if [[ ${{ inputs.subprojects }} == false ]]; then ./gradlew shadowJar -x test; else ./gradlew :${{ inputs.app }}:shadowJar -x test; fi
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
