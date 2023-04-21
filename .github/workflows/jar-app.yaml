@@ -6,6 +6,33 @@ on:
         type: string
 
 jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'kotlin' ]
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
+      - run: ./gradlew shadowJar -x test
+        env:
+          ORG_GRADLE_PROJECT_githubUser: x-access-token
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
   test:
     name: Test
     runs-on: ubuntu-latest
