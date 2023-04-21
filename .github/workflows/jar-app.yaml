@@ -19,15 +19,22 @@ jobs:
       matrix:
         language: [ 'kotlin' ]
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
-      - run: ./gradlew shadowJar -x test
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
 
       - uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
+
+      - uses: actions/setup-java@v3
+        id: setup-java
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: ./gradlew shadowJar -x test
+        env:
+          ORG_GRADLE_PROJECT_githubUser: x-access-token
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: github/codeql-action/analyze@v2
         with:
