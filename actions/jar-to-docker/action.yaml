@@ -49,7 +49,7 @@ runs:
         team: teamsykmelding
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
-        dockerfile_path: ${{ inputs.dockerfile_path }}
+        dockerfile: ${{ inputs.dockerfile_path }}
         docker_context: ${{ inputs.docker_context }}
         image_suffix: ${{ inputs.env }}
         build_args: |
