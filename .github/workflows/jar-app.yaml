@@ -83,11 +83,14 @@ jobs:
     needs: [test, build-dev]
     steps:
       - uses: actions/checkout@v3
+        shell: bash
+        run: |
+          if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-dev.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-dev.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: if [[ ${{ inputs.subprojects }} == false ]]; then naiserator-dev.yaml; else ${{ inputs.app }}/naiserator-dev.yaml; fi
+          RESOURCE: ${{ env.RESOURCE }}
           VAR: image=${{ needs.build-dev.outputs.image }}
 
 
@@ -121,9 +124,12 @@ jobs:
     needs: [test, build-prod]
     steps:
       - uses: actions/checkout@v3
+        shell: bash
+        run: |
+          if [[ ${{ inputs.subprojects }} == false ]]; then echo "RESOURCE=naiserator-prod.yaml" >> $GITHUB_ENV; else echo "RESOURCE=${{ inputs.app }}/naiserator-prod.yaml" >> $GITHUB_ENV; fi
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: if [[ ${{ inputs.subprojects }} == false ]]; then naiserator-prod.yaml; else ${{ inputs.app }}/naiserator-prod.yaml; fi
+          RESOURCE: ${{ env.RESOURCE }}
           VAR: image=${{ needs.build-prod.outputs.image }}
