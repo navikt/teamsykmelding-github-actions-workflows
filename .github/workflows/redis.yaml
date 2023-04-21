@@ -1,0 +1,38 @@
+on:
+  workflow_call:
+  push:
+    paths:
+      - 'redis.yaml'
+jobs:
+  deploy-dev:
+    if: github.ref_name != 'main'
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy redis to dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLUSTER: dev-gcp
+          TEAM: teamsykmelding
+          RESOURCE: redis.yaml
+          PRINT_PAYLOAD: true
+  deploy-prod:
+    if: github.ref_name == 'main'
+    name: Deploy redis to prod-gcp
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy to redis dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLUSTER: prod-gcp
+          TEAM: teamsykmelding
+          RESOURCE: redis.yaml
+          PRINT_PAYLOAD: true
