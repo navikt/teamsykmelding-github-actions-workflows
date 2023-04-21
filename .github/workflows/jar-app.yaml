@@ -87,7 +87,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: naiserator-dev.yaml
+          RESOURCE: if [[ ${{ inputs.subprojects }} == false ]]; then naiserator-dev.yaml; else ${{ inputs.app }}/naiserator-dev.yaml; fi
           VAR: image=${{ needs.build-dev.outputs.image }}
 
 
@@ -125,5 +125,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: naiserator-prod.yaml
+          RESOURCE: if [[ ${{ inputs.subprojects }} == false ]]; then naiserator-prod.yaml; else ${{ inputs.app }}/naiserator-prod.yaml; fi
           VAR: image=${{ needs.build-prod.outputs.image }}
