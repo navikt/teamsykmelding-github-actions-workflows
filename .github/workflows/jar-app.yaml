@@ -4,6 +4,12 @@ on:
       app:
         required: true
         type: string
+      dockerfiler_path:
+        required: true
+        type: string
+      subprojects:
+        required: true
+        type: boolean
 
 jobs:
   analyze:
@@ -31,7 +37,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - run: ./gradlew shadowJar -x test
+      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew :${{ inputs.app }}:shadowJar -x test; else ./gradlew shadowJar -x test; fi
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
-      - run: ./gradlew test
+      - run: if [[ ${{ inputs.subprojects }} ]]; then ./gradlew :${{ inputs.app }}:test; else ./gradlew test; fi
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -69,6 +75,8 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          dockerfiler_path: ${{ inputs.dockerfiler_path }}
+          subprojects: ${{ inputs.subprojects }}
 
   deploy-dev:
     if: github.ref_name != 'main'

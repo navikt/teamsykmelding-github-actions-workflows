@@ -17,6 +17,12 @@ inputs:
   github_token:
     required: true
     type: string
+  dockerfiler_path:
+    required: true
+    type: string
+  subprojects:
+    required: true
+    type: boolean
 outputs:
   image:
     description: "Docker image in GAR"
@@ -32,7 +38,7 @@ runs:
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       shell: bash
       run: |
-            ./gradlew shadowJar -x test
+        if [[ ${{ inputs.subprojects }} ]]; then ./gradlew :${{ inputs.app }}:shadowJar -x test; else ./gradlew shadowJar -x test; fi
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
@@ -40,6 +46,7 @@ runs:
         team: teamsykmelding
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
+        docker_context: ${{ inputs.app }}
         image_suffix: ${{ inputs.env }}
         build_args: |
             ENV=${{ inputs.env }}
