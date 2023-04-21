@@ -4,12 +4,15 @@ on:
       app:
         required: true
         type: string
-      dockerfiler_path:
+      dockerfile_path:
         required: true
         type: string
       subprojects:
         required: true
         type: boolean
+      docker_context:
+        required: true
+        type: string
 
 jobs:
   analyze:
@@ -75,8 +78,9 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfiler_path: ${{ inputs.dockerfiler_path }}
+          dockerfile_path: ${{ inputs.dockerfile_path }}
           subprojects: ${{ inputs.subprojects }}
+          docker_context:  ${{ inputs.docker_context }}
 
   deploy-dev:
     if: github.ref_name != 'main'
@@ -112,8 +116,9 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfiler_path: ${{ inputs.dockerfiler_path }}
+          dockerfile_path: ${{ inputs.dockerfile_path }}
           subprojects: ${{ inputs.subprojects }}
+          docker_context:  ${{ inputs.docker_context }}
 
   deploy-prod:
     if: github.ref_name == 'main'

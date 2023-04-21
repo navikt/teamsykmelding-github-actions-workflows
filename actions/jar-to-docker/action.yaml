@@ -17,12 +17,15 @@ inputs:
   github_token:
     required: true
     type: string
-  dockerfiler_path:
+  dockerfile_path:
     required: true
     type: string
   subprojects:
     required: true
     type: boolean
+  docker_context:
+    required: true
+    type: string
 outputs:
   image:
     description: "Docker image in GAR"
@@ -46,7 +49,8 @@ runs:
         team: teamsykmelding
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
-        docker_context: ${{ inputs.app }}
+        dockerfile_path: ${{ inputs.dockerfile_path }}
+        docker_context: ${{ inputs.docker_context }}
         image_suffix: ${{ inputs.env }}
         build_args: |
             ENV=${{ inputs.env }}
