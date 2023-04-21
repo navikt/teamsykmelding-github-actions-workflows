@@ -33,11 +33,17 @@ jobs:
       matrix:
         language: [ 'kotlin' ]
     steps:
+      - uses: actions/checkout@v3
+
       - uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
 
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
+      - uses: actions/setup-java@v3
+        id: setup-java
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - run: if [[ ${{ inputs.subprojects }} == false ]]; then ./gradlew shadowJar -x test; else ./gradlew :${{ inputs.app }}:shadowJar -x test; fi
         env:
