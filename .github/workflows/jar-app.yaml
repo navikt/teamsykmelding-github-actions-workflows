@@ -112,6 +112,8 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          dockerfiler_path: ${{ inputs.dockerfiler_path }}
+          subprojects: ${{ inputs.subprojects }}
 
   deploy-prod:
     if: github.ref_name == 'main'
