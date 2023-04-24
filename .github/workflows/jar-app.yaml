@@ -4,21 +4,6 @@ on:
       app:
         required: true
         type: string
-      dockerfile_path:
-        required: true
-        type: string
-      subprojects:
-        required: true
-        type: boolean
-      docker_context:
-        required: true
-        type: string
-      naiserator_dev:
-        required: true
-        type: string
-      naiserator_prod:
-        required: true
-        type: string
 jobs:
   analyze:
     name: Analyze
@@ -45,7 +30,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - run: if [[ ${{ inputs.subprojects }} == false ]]; then ./gradlew shadowJar -x test; else ./gradlew :${{ inputs.app }}:shadowJar -x test; fi
+      - run: ./gradlew shadowJar -x test
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -59,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
-      - run: if [[ ${{ inputs.subprojects }} == false ]]; then ./gradlew test; else ./gradlew :${{ inputs.app }}:test; fi
+      - run: ./gradlew test
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -83,9 +68,6 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile_path: ${{ inputs.dockerfile_path }}
-          subprojects: ${{ inputs.subprojects }}
-          docker_context:  ${{ inputs.docker_context }}
 
   deploy-dev:
     if: github.ref_name != 'main'
@@ -98,7 +80,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: ${{ inputs.naiserator_dev }}
+          RESOURCE: naiserator-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }}
 
 
@@ -121,9 +103,6 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile_path: ${{ inputs.dockerfile_path }}
-          subprojects: ${{ inputs.subprojects }}
-          docker_context:  ${{ inputs.docker_context }}
 
   deploy-prod:
     if: github.ref_name == 'main'
@@ -136,5 +115,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: ${{ inputs.naiserator_prod }}
+          RESOURCE: naiserator-prod.yaml
           VAR: image=${{ needs.build-prod.outputs.image }}
