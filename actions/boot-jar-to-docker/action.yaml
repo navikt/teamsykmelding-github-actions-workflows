@@ -42,4 +42,4 @@ runs:
         project_id: ${{ inputs.project_id }}
         image_suffix: ${{ inputs.env }}
         build_args: |
-            ENV=${{ inputs.env }}
+          ENV=${{ inputs.env }}
