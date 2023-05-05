@@ -50,5 +50,3 @@ runs:
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
         image_suffix: ${{ inputs.env }}
-        build_args: |
-            ENV=${{ inputs.env }}

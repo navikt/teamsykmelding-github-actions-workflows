@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'kotlin' ]
+        language: ["kotlin"]
     steps:
       - uses: actions/checkout@v3
 
@@ -27,8 +27,8 @@ jobs:
       - uses: actions/setup-java@v3
         id: setup-java
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
 
       - run: ./gradlew shadowJar -x test
         env:
@@ -48,7 +48,7 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
-      
+
   build-dev:
     if: github.ref_name != 'main'
     name: Build for dev
@@ -82,7 +82,6 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: naiserator-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }}
-
 
   build-prod:
     if: github.ref_name == 'main'
