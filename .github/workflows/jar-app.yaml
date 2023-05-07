@@ -15,8 +15,6 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        language: ["kotlin"]
     steps:
       - uses: actions/checkout@v3
 
@@ -37,7 +35,7 @@ jobs:
 
       - uses: github/codeql-action/analyze@v2
         with:
-          category: "/language:${{matrix.language}}"
+          languages: kotlin
 
   test:
     name: Test
@@ -50,7 +48,6 @@ jobs:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
   build-dev:
-    if: github.ref_name != 'main'
     name: Build for dev
     runs-on: ubuntu-latest
     permissions:
@@ -70,7 +67,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-dev:
-    if: github.ref_name != 'main'
     name: Deploy to dev
     runs-on: ubuntu-latest
     needs: [test, build-dev]
