@@ -5,9 +5,6 @@ inputs:
   app:
     required: true
     type: string
-  env:
-    required: true
-    type: string
   identity_provider:
     required: true
     type: string
@@ -40,6 +37,3 @@ runs:
         team: teamsykmelding
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
-        image_suffix: ${{ inputs.env }}
-        build_args: |
-          ENV=${{ inputs.env }}
