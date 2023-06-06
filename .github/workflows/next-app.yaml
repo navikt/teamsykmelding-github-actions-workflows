@@ -26,11 +26,11 @@ jobs:
     name: Test and lint
     runs-on: ubuntu-latest
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+      - uses: navikt/teamesyfo-github-actions-workflows/actions/npm-cached@main
         with:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn lint
-      - run: yarn test
+      - run: npm run lint && tsc
+      - run: npm run test
 
   build-dev:
     if: ${{ !startsWith(github.ref_name, 'demo') }}
@@ -43,7 +43,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamesyfo-github-actions-workflows/actions/next-to-docker@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -84,7 +84,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamesyfo-github-actions-workflows/actions/next-to-docker@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -142,7 +142,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamesyfo-github-actions-workflows/actions/next-to-docker@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}

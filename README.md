@@ -1,6 +1,6 @@
-# teamsykmelding-github-actions-workflows
+# teamesyfo-github-actions-workflows
 
-This is a repository for GitHub actions workflows for teamsykmelding
+This is a repository for GitHub actions workflows for teamesyfo
 
 ## 🚀 Usage
 
@@ -18,11 +18,11 @@ on: push
 
 jobs:
   next-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/next-app.yaml@main
+    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app.yaml@main
     secrets: inherit
     with:
-      app: sykmeldinger
-      base-path: /syk/sykmeldinger
+      app: REPLACE_ME
+      base-path: REPLACE_ME
 ```
 
 Add the secondary `demo-delete.yaml` with the following:
@@ -33,11 +33,11 @@ on: delete
 
 jobs:
   branch-delete:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/next-app-demo-delete.yaml@main
+    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app-demo-delete.yaml@main
     secrets: inherit
     with:
-      app: dinesykmeldte
-      base-path: /arbeidsgiver/sykmeldte
+      app: REPLACE_ME
+      base-path: REPLACE_ME
 ```
 
 #### **Important:**
@@ -57,9 +57,9 @@ This reusable workflows make the following assumptions:
    kind: 'Application'
    metadata:
      name: {{appname}}-demo
-     namespace: teamsykmelding
+     namespace: team-esyfo
      labels:
-       team: teamsykmelding
+       team: team-esyfo
        branchState: {{branchState}}
    spec:
      image: {{image}}
@@ -80,10 +80,7 @@ This reusable workflows make the following assumptions:
 
 ## 👥 Contact
 
-This project is maintained by [navikt/teamsykmelding](CODEOWNERS)
-
-Questions and/or feature requests?
-Please create an [issue](https://github.com/navikt/teamsykmelding-github-actions-workflows/issues)
+This project is maintained by [navikt/team-esyfo](CODEOWNERS)
 
 If you work in [@navikt](https://github.com/navikt) you can reach us at the Slack
-channel [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997)
+channel [#esyfo](https://nav-it.slack.com/archives/C012X796B4L)

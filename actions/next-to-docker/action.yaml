@@ -1,4 +1,4 @@
-name: "Installs node, installs yarn dependencies with chache"
+name: "Installs node, installs npm dependencies with cache"
 description: "Builds a Next.JS App, creates a docker image and uploads it to GAR"
 
 inputs:
@@ -25,7 +25,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+    - uses: navikt/teamesyfo-github-actions-workflows/actions/npm-cached@main
       with:
         NPM_AUTH_TOKEN: ${{ inputs.NPM_AUTH_TOKEN }}
     - name: Copy appropriate env file to root
@@ -33,22 +33,22 @@ runs:
       run: |
         echo "Copying nais/envs/.env.${{ inputs.env }}..."
         cp nais/envs/.env.${{ inputs.env }} .env.production
-    - id: yarn-build
+    - id: npm-build
       shell: bash
-      run: yarn build
+      run: npm run build
       env:
         NEXT_PUBLIC_VERSION: ${{ github.sha }}
     - name: Upload static files to NAV CDN
       uses: navikt/frontend/actions/cdn-upload/v1@main
       with:
-        cdn-team-name: teamsykmelding
+        cdn-team-name: team-esyfo
         source: ./.next/static
         destination: "/${{ inputs.app }}/_next"
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
       with:
-        team: teamsykmelding
+        team: team-esyfo
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
         image_suffix: ${{ inputs.env }}

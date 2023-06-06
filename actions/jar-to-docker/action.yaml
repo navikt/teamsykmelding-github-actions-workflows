@@ -22,7 +22,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
+    - uses: navikt/teamesyfo-github-actions-workflows/actions/gradle-cached@main
     - name: Build jar
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
@@ -34,6 +34,6 @@ runs:
       uses: nais/docker-build-push@v0
       id: docker-build-push
       with:
-        team: teamsykmelding
+        team: team-esyfo
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}

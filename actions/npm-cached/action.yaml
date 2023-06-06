@@ -1,4 +1,4 @@
-name: "Installs node, installs yarn dependencies with chache"
+name: "Installs node, installs npm dependencies with cache"
 description: "Builds a Next.JS App, creates a docker image and uploads it to GAR"
 
 inputs:
@@ -14,17 +14,18 @@ runs:
       id: setup-node
       with:
         node-version: 18.x
-        cache: yarn
+        cache: npm
     - id: set-env
       shell: bash
       run: echo "NPM_AUTH_TOKEN=${{ inputs.NPM_AUTH_TOKEN }}" >> $GITHUB_ENV
     - uses: actions/cache@v3
-      id: next-cache
       with:
-        path: .next/cache
-        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+        path: |
+          ~/.npm
+          ${{ github.workspace }}/.next/cache
+        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
         restore-keys: |
-          ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
-    - id: yarn-install
+          ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+    - id: npm-install
       shell: bash
-      run: yarn --immutable
+      run: npm ci
