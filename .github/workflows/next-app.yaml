@@ -31,6 +31,13 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn lint
       - run: yarn test
+      - name: Report debt
+        run: |
+
+          FILE=./scripts/debt.sh
+          if [ -f "$FILE" ]; then
+            ./scripts/debt.sh >> $GITHUB_STEP_SUMMARY
+          fi
 
   build-dev:
     if: ${{ !startsWith(github.ref_name, 'demo') }}
