@@ -27,6 +27,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+          cache: "gradle"
 
       - run: ./gradlew shadowJar -x test
         env:
