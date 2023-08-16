@@ -15,28 +15,34 @@ jobs:
 
     strategy:
       fail-fast: false
+
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - uses: github/codeql-action/init@v2
-        with:
-          languages: kotlin
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: "gradle"
 
-      - uses: actions/setup-java@v3
-        id: setup-java
-        with:
-          distribution: "temurin"
-          java-version: "17"
-          cache: "gradle"
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: kotlin
 
-      - run: ./gradlew shadowJar -x test
-        env:
+    - name: Build gradle artifacts
+      run: | 
+        ./gradlew shadowJar -x test
+      env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: github/codeql-action/analyze@v2
-        with:
-          category: "/language:kotlin"
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:kotlin"
 
   test:
     name: Test
