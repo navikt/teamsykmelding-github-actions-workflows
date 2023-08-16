@@ -36,7 +36,7 @@ jobs:
 
       - name: Build bootJar artifacts
         run: |
-          ./gradlew shadowJar -x test
+          ./gradlew bootJar -x test
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
