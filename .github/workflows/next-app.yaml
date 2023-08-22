@@ -10,7 +10,6 @@ on:
 
 jobs:
   codeql-analysis:
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:
       security-events: write
