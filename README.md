@@ -40,6 +40,34 @@ jobs:
       base-path: /arbeidsgiver/sykmeldte
 ```
 
+### Deploying a Ktor application (jar-app.yaml)
+```yaml
+name: Deploy to dev and prod
+on: push
+
+jobs:
+  jar-app:
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app.yaml@main
+    secrets: inherit
+    with:
+      app: macgyver
+```
+
+
+### Deploying a Springboot application (boot-jar-app.yaml)
+```yaml
+name: Deploy app to dev and prod
+on: push
+
+jobs:
+  jar-app:
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/boot-jar-app.yaml@main
+    secrets: inherit
+    with:
+      app: syk-dig-backend
+```
+
+
 #### **Important:**
 
 This reusable workflows make the following assumptions:
