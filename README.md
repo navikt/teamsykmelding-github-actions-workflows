@@ -79,9 +79,20 @@ This reusable workflows make the following assumptions:
    </details>
 
 ### Deploying a Ktor application (jar-app.yaml)
+<details>
+<summary>Detailed instructions</summary>
+Add the main `deploy.yaml` with the following:
+
 ```yaml
 name: Deploy to dev and prod
 on: push
+
+permissions:
+   actions: read
+   contents: read
+   security-events: write
+   packages: write
+   id-token: write
 
 jobs:
   jar-app:
@@ -91,11 +102,25 @@ jobs:
       app: macgyver
 ```
 
+</details>
 
 ### Deploying a Springboot application (boot-jar-app.yaml)
+<details>
+<summary>Detailed instructions</summary>
+Add the main `deploy.yaml` with the following:
+
+
+
 ```yaml
 name: Deploy app to dev and prod
 on: push
+
+permissions:
+   actions: read
+   contents: read
+   security-events: write
+   packages: write
+   id-token: write
 
 jobs:
   jar-app:
@@ -104,7 +129,7 @@ jobs:
     with:
       app: syk-dig-backend
 ```
-   
+</details>   
 
 ## 👥 Contact
 
