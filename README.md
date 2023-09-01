@@ -40,34 +40,6 @@ jobs:
       base-path: /arbeidsgiver/sykmeldte
 ```
 
-### Deploying a Ktor application (jar-app.yaml)
-```yaml
-name: Deploy to dev and prod
-on: push
-
-jobs:
-  jar-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app.yaml@main
-    secrets: inherit
-    with:
-      app: macgyver
-```
-
-
-### Deploying a Springboot application (boot-jar-app.yaml)
-```yaml
-name: Deploy app to dev and prod
-on: push
-
-jobs:
-  jar-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/boot-jar-app.yaml@main
-    secrets: inherit
-    with:
-      app: syk-dig-backend
-```
-
-
 #### **Important:**
 
 This reusable workflows make the following assumptions:
@@ -105,6 +77,34 @@ This reusable workflows make the following assumptions:
 
    Note: Normal runtime-only (e.g. backend-only) envs can still be added in the nais.yaml.
    </details>
+
+### Deploying a Ktor application (jar-app.yaml)
+```yaml
+name: Deploy to dev and prod
+on: push
+
+jobs:
+  jar-app:
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app.yaml@main
+    secrets: inherit
+    with:
+      app: macgyver
+```
+
+
+### Deploying a Springboot application (boot-jar-app.yaml)
+```yaml
+name: Deploy app to dev and prod
+on: push
+
+jobs:
+  jar-app:
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/boot-jar-app.yaml@main
+    secrets: inherit
+    with:
+      app: syk-dig-backend
+```
+   
 
 ## 👥 Contact
 
