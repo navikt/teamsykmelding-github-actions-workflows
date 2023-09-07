@@ -34,15 +34,16 @@ runs:
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
-      shell: bash
-      run: |
-        ./gradlew cyclonedxBom
+      uses: gradle/gradle-build-action@v2.6.1
+      with:
+        dependency-graph: generate-and-submit
+        arguments: build
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
       with:
         team: teamsykmelding
         salsa: true
-        byosbom: build/reports/bom.json
+        byosbom: dependency-graph-reports/deploy-build.json
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
