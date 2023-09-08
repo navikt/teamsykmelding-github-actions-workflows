@@ -89,7 +89,7 @@ on: push
 
 permissions:
    actions: read
-   contents: read
+   contents: write
    security-events: write
    packages: write
    id-token: write
@@ -117,7 +117,7 @@ on: push
 
 permissions:
    actions: read
-   contents: read
+   contents: write
    security-events: write
    packages: write
    id-token: write
