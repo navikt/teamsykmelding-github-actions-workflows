@@ -49,6 +49,8 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached@main
       - run: ./gradlew test
@@ -61,9 +63,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       packages: "write"
-      contents: "read"
+      contents: "write"
       id-token: "write"
-      checks: "write"
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:

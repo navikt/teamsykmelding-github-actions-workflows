@@ -11,7 +11,7 @@ runs:
         distribution: 'temurin'
         java-version: '17'
         cache: "gradle"
-    - uses: gradle/wrapper-validation-action@v1.0.6
+    - uses: gradle/wrapper-validation-action@v1.1.0
       id: gradle-wrapper-validation
     - uses: actions/cache@v3
       id: gradle-cache
