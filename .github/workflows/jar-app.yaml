@@ -13,11 +13,6 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'kotlin' ]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -28,18 +23,17 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
-        languages: ${{ matrix.language }}
+        languages: kotlin
 
     - name: Build gradle artifacts
       run: | 
         ./gradlew shadowJar -x test
       env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
@@ -56,7 +50,7 @@ jobs:
       - run: ./gradlew test
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
 
   build:
     name: Build
