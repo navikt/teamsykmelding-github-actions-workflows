@@ -38,8 +38,27 @@ jobs:
             ./scripts/debt.sh >> $GITHUB_STEP_SUMMARY
           fi
 
+  build-dependabot:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    name: Build for dependabot PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Copy appropriate env file to root
+        shell: bash
+        run: |
+          echo "Copying nais/envs/.env.prod..."
+          cp nais/envs/.env.prod .env.production
+      - id: yarn-build
+        shell: bash
+        run: yarn build
+        env:
+          NEXT_PUBLIC_VERSION: ${{ github.sha }}
+
   build-dev:
-    if: ${{ !startsWith(github.ref_name, 'demo') }}
+    if: ${{ !startsWith(github.ref_name, 'demo') && github.actor != 'dependabot[bot]' }}
     name: Build for dev
     runs-on: ubuntu-latest
     permissions:
