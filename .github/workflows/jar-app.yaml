@@ -110,4 +110,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: naiserator-prod.yaml
-          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }}
+          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }},sourceVersionURL=https://github.com/${{ github.repository }}/tree/${{ github.sha }}
