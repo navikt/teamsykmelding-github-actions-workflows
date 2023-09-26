@@ -27,6 +27,7 @@ runs:
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
+        COMMIT_SHA: ${{ github.sha }}
       shell: bash
       run: |
         ./gradlew shadowJar -x test
