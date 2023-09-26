@@ -96,7 +96,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: naiserator-dev.yaml
-          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }}
+          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }},sourceVersionURL=https://github.com/${{ github.repository }}/tree/${{ github.sha }}
 
   deploy-prod:
     if: github.ref_name == 'main'
