@@ -96,7 +96,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: naiserator-dev.yaml
-          VAR: image=${{ needs.build.outputs.image }}
+          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }}
 
   deploy-prod:
     if: github.ref_name == 'main'
@@ -110,4 +110,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: naiserator-prod.yaml
-          VAR: image=${{ needs.build.outputs.image }}
+          VAR: image=${{ needs.build.outputs.image }},commit=${{ github.sha }}
