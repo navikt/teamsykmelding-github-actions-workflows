@@ -77,7 +77,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/jar-to-docker-21@main
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
