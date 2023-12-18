@@ -24,7 +24,7 @@ jobs:
         java-version: '21'
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: kotlin
 
@@ -36,7 +36,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
 
