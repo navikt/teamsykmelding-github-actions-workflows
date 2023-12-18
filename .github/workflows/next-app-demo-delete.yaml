@@ -18,7 +18,7 @@ jobs:
       - uses: gacts/github-slug@v1
         id: slug
       - name: Scale down dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp

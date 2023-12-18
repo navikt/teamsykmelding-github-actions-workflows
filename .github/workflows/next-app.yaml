@@ -91,7 +91,7 @@ jobs:
         uses: mikefarah/yq@v4.40.4
         with:
           cmd: yq '.spec.ingresses[0]' nais/nais-dev.yaml
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
@@ -128,7 +128,7 @@ jobs:
     needs: [test-and-verify, build-demo]
     steps:
       - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
@@ -149,7 +149,7 @@ jobs:
         id: slug
         with:
           to-slug: ${{ inputs.app }}-${{ github.ref_name }}
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
@@ -190,7 +190,7 @@ jobs:
         uses: mikefarah/yq@v4.40.4
         with:
           cmd: yq '.spec.ingresses[0]' nais/nais-prod.yaml
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
