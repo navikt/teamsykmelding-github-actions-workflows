@@ -93,7 +93,6 @@ jobs:
           cmd: yq '.spec.ingresses[0]' nais/nais-dev.yaml
       - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }},version=${{ github.sha }}
@@ -130,7 +129,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ inputs.app }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ inputs.app }},replicas=1,branchState=alive
@@ -151,7 +149,6 @@ jobs:
           to-slug: ${{ inputs.app }}-${{ github.ref_name }}
       - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ steps.slug.outputs.slug }},replicas=1,branchState=alive
@@ -192,7 +189,6 @@ jobs:
           cmd: yq '.spec.ingresses[0]' nais/nais-prod.yaml
       - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais-prod.yaml
           VAR: image=${{ needs.build-prod.outputs.image }},version=${{ github.sha }}
