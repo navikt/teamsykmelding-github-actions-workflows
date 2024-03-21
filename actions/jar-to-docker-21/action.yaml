@@ -45,6 +45,5 @@ runs:
       with:
         team: teamsykmelding
         salsa: true
-        byosbom: dependency-graph-reports/deploy_app_to_dev_and_prod-build.json
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
