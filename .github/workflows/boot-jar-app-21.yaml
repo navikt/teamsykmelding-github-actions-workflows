@@ -76,6 +76,7 @@ jobs:
 
 
   trivy-docker:
+    name: Trivy
     permissions:
       id-token: 'write'
       security-events: 'write'

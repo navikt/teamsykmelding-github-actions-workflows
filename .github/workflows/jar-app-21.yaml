@@ -12,6 +12,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
+      id-token: write
 
     steps:
     - name: Checkout repository
@@ -86,6 +87,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   trivy-docker:
+    name: Trivy
     permissions:
       id-token: 'write'
       security-events: 'write'
