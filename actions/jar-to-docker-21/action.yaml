@@ -40,6 +40,7 @@ runs:
         dependency-graph: generate-and-submit
 
     - name: Run a build, generating the dependency graph snapshot which will be submitted
+      shell: bash
       run: ./gradlew build
         
     - name: Push docker image to GAR
