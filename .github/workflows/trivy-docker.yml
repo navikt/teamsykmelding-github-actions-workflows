@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+
+
+jobs:
+  trivy-test-docker:
+    if: github.ref_name == 'main'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - run: touch me
+      - uses: nais/login@v0
+        with:
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          team: flex
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@d710430a6722f083d3b36b8339ff66b32f22ee55
+        with:
+          image-ref: ${{ inputs.image }}
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          scanners: 'vuln'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
