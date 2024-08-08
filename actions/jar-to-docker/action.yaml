@@ -38,7 +38,9 @@ runs:
       uses: gradle/actions/setup-gradle@v4
       with:
         dependency-graph: generate-and-submit
-        arguments: build
+
+    - name: Build
+      run: ./gradlew build
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
       id: docker-build-push
