@@ -74,6 +74,18 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+
+  trivy-docker:
+    name: Trivy
+    permissions:
+      id-token: 'write'
+      security-events: 'write'
+    needs: build
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@main
+    with:
+      image: ${{ needs.build.outputs.image }}
+    secrets: inherit
+
   deploy-dev:
     name: Deploy to dev
     runs-on: ubuntu-latest
