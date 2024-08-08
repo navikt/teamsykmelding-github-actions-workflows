@@ -89,7 +89,7 @@ jobs:
     permissions:
       id-token: 'write'
       security-events: 'write'
-    needs: build-and-publish
+    needs: build
     uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@trivy
     with:
       image: ${{ needs.build.outputs.image }}
