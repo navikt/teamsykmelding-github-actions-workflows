@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |
         ./gradlew shadowJar -x test
-    - name: Generate and output SBOM
+    - name: Setup Gradle to generate and submit dependency graphs
       env:
         ORG_GRADLE_PROJECT_githubUser: x-access-token
         ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
@@ -39,7 +39,7 @@ runs:
       with:
         dependency-graph: generate-and-submit
 
-    - name: Build
+    - name: Run a build, generating the dependency graph snapshot which will be submitted
       run: ./gradlew build
         
     - name: Push docker image to GAR
