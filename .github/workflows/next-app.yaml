@@ -85,7 +85,7 @@ jobs:
     needs: build-dev
     uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@main
     with:
-      image: ${{ needs.build-and-publish.outputs.image }}
+      image: ${{ needs.build-dev.outputs.image }}
     secrets: inherit
 
   deploy-dev:
