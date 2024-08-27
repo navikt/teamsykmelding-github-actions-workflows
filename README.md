@@ -78,7 +78,7 @@ This reusable workflows make the following assumptions:
    Note: Normal runtime-only (e.g. backend-only) envs can still be added in the nais.yaml.
    </details>
 
-### Deploying a Ktor application (jar-app.yaml)
+### Deploying a Ktor application (jar-app-21.yaml)
 <details>
 <summary>Detailed instructions</summary>
 Add the main `deploy.yaml` with the following:
@@ -96,7 +96,7 @@ permissions:
 
 jobs:
   jar-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app.yaml@main
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app-21.yaml@main
     secrets: inherit
     with:
       app: macgyver
@@ -104,7 +104,7 @@ jobs:
 
 </details>
 
-### Deploying a Springboot application (boot-jar-app.yaml)
+### Deploying a Springboot application (boot-jar-app-21.yaml)
 <details>
 <summary>Detailed instructions</summary>
 Add the main `deploy.yaml` with the following:
@@ -124,7 +124,7 @@ permissions:
 
 jobs:
   jar-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/boot-jar-app.yaml@main
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/boot-jar-app-21.yaml@main
     secrets: inherit
     with:
       app: syk-dig-backend
@@ -136,7 +136,7 @@ jobs:
 This project is maintained by [navikt/teamsykmelding](CODEOWNERS)
 
 Questions and/or feature requests?
-Please create an [pull request](https://github.com/navikt/teamsykmelding-github-actions-workflows/pulls)
+Please create a [pull request](https://github.com/navikt/teamsykmelding-github-actions-workflows/pulls)
 
 If you work in [@navikt](https://github.com/navikt) you can reach us at the Slack
 channel [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997)
