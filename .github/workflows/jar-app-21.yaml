@@ -54,7 +54,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
 
   build-for-dependabot:
-    if: github.actor == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     name: Build for dependabot
     runs-on: ubuntu-latest
     steps:
@@ -68,7 +68,7 @@ jobs:
           ./gradlew shadowJar -x test
 
   build:
-    if: github.actor != 'dependabot[bot]'
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     name: Build
     runs-on: ubuntu-latest
     permissions:
