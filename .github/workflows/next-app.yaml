@@ -39,8 +39,7 @@ jobs:
           fi
 
   build-dependabot:
-    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
-
+    if: github.actor == 'dependabot[bot]'
     name: Build for dependabot PR
     runs-on: ubuntu-latest
     steps:
@@ -59,7 +58,7 @@ jobs:
           NEXT_PUBLIC_VERSION: ${{ github.sha }}
 
   build-dev:
-    if: ${{ !startsWith(github.ref_name, 'demo') && github.event.pull_request.user.login != 'dependabot[bot]'}}
+    if: ${{ !startsWith(github.ref_name, 'demo') && github.actor != 'dependabot[bot]'}}
     name: Build for dev
     runs-on: ubuntu-latest
     permissions:
