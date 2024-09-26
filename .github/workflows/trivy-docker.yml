@@ -4,9 +4,6 @@ on:
       image:
         required: true
         type: string
-      github_token:
-        required: true
-        type: string
 
 jobs:
   trivy-test-docker:
@@ -24,7 +21,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@d710430a6722f083d3b36b8339ff66b32f22ee55
         env:
-          ACTIONS_RUNTIME_TOKEN: ${{ inputs.github_token  }}
+          ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
         with:
           image-ref: ${{ inputs.image }}
           ignore-unfixed: true
