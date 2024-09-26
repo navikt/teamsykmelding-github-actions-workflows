@@ -32,8 +32,6 @@ runs:
         ./gradlew bootJar -x test
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
-      env:
-        ACTIONS_RUNTIME_TOKEN: ${{ inputs.github_token  }}
       id: docker-build-push
       with:
         team: teamsykmelding
