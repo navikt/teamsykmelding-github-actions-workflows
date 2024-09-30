@@ -48,6 +48,8 @@ runs:
         project_id: ${{ inputs.project_id }}
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
+      env:
+        ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
       id: docker-build-push
       with:
         team: teamsykmelding
