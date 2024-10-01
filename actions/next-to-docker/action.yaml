@@ -14,6 +14,9 @@ inputs:
   project_id:
     required: true
     type: string
+  team:
+    required: true
+    default: "teamsykmelding"
   NPM_AUTH_TOKEN:
     required: true
     type: string
@@ -41,7 +44,7 @@ runs:
     - name: Upload static files to NAV CDN
       uses: nais/deploy/actions/cdn-upload/v2@master
       with:
-        team: teamsykmelding
+        team: ${{ inputs.team }}
         source: ./.next/static
         destination: "/${{ inputs.app }}/_next"
         identity_provider: ${{ inputs.identity_provider }}
@@ -52,7 +55,7 @@ runs:
         ACTIONS_RUNTIME_TOKEN: ${{ inputs.NPM_AUTH_TOKEN  }}
       id: docker-build-push
       with:
-        team: teamsykmelding
+        team: ${{ inputs.team }}
         identity_provider: ${{ inputs.identity_provider }}
         project_id: ${{ inputs.project_id }}
         image_suffix: ${{ inputs.env }}
