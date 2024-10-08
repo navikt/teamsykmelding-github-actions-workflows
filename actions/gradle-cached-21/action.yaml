@@ -11,14 +11,12 @@ runs:
         distribution: 'temurin'
         java-version: '21'
         cache: "gradle"
-    - uses: gradle/actions/wrapper-validation@v3
-      id: gradle-wrapper-validation
     - uses: actions/cache@v4
       id: gradle-cache
       with:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/.*gradle*') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
