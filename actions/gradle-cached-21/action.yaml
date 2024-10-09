@@ -11,12 +11,3 @@ runs:
         distribution: 'temurin'
         java-version: '21'
         cache: "gradle"
-    - uses: actions/cache@v4
-      id: gradle-cache
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/.*gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
