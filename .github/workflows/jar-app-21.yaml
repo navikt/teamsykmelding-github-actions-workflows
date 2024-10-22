@@ -33,10 +33,7 @@ jobs:
     - name: Build gradle artifacts
       run: | 
         ./gradlew shadowJar -x test
-      env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
-
+      
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
@@ -49,10 +46,7 @@ jobs:
       contents: "read"
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
-      - run: ./gradlew test
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
+      - run: ./gradlew test        
 
   build-for-dependabot:
     if: github.actor == 'dependabot[bot]'
@@ -61,9 +55,6 @@ jobs:
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
       - name: Build jar
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.READER_TOKEN }}
         shell: bash
         run: |
           ./gradlew shadowJar -x test
