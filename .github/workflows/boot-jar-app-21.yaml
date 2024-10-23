@@ -29,7 +29,6 @@ jobs:
           java-version: '21'
           cache: "gradle"
 
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -38,9 +37,6 @@ jobs:
       - name: Build bootJar artifacts
         run: |
           ./gradlew bootJar -x test
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -52,10 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
-      - run: ./gradlew test
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+      - run: ./gradlew test   
 
   build:
     name: Build

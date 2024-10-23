@@ -24,9 +24,6 @@ runs:
   steps:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
     - name: Build bootJar
-      env:
-        ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       shell: bash
       run: |
         ./gradlew bootJar -x test
