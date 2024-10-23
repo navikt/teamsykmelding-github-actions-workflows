@@ -14,12 +14,12 @@ jobs:
       security-events: write
       id-token: write
 
-   strategy:
+    strategy:
       fail-fast: false
       matrix:
         language: [ 'kotlin' ]
 
-   steps:
+    steps:
      - name: Checkout repository
        uses: actions/checkout@v4
 
@@ -41,7 +41,7 @@ jobs:
 
      - name: Perform CodeQL Analysis
        uses: github/codeql-action/analyze@v3
-        with:
+       with:
           category: "/language:${{matrix.language}}"
 
   test:
