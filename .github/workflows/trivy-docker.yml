@@ -19,7 +19,10 @@ jobs:
           team: teamsykmelding
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.28.0
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/v2/aquasecurity/trivy-java-db
         with:
           image-ref: ${{ inputs.image }}
           ignore-unfixed: true
