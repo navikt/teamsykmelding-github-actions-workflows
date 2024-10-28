@@ -53,6 +53,7 @@ runs:
       uses: nais/docker-build-push@v0
       env:
         ACTIONS_RUNTIME_TOKEN: ${{ inputs.NPM_AUTH_TOKEN  }}
+        TRIVY_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-db"
       id: docker-build-push
       with:
         team: ${{ inputs.team }}
