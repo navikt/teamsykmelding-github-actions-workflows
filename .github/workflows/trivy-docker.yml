@@ -21,7 +21,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         env:
-          ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          TRIVY_JAVA_DB_REPOSITORY: "europe-north1-docker.pkg.dev/nais-io/remote-ghcr/aquasecurity/trivy-java-db:1"
         with:
           image-ref: ${{ inputs.image }}
           ignore-unfixed: true
