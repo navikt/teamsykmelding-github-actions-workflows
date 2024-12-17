@@ -49,8 +49,8 @@ jobs:
       - name: Copy appropriate env file to root
         shell: bash
         run: |
-          echo "Copying nais/envs/.env.prod..."
-          cp nais/envs/.env.prod .env.production
+          echo "Copying .nais/envs/.env.prod..."
+          cp .nais/envs/.env.prod .env.production
       - id: yarn-build
         shell: bash
         run: yarn build
@@ -68,7 +68,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -101,11 +101,11 @@ jobs:
       - id: get-ingress
         uses: mikefarah/yq@v4.44.1
         with:
-          cmd: yq '.spec.ingresses[0]' nais/nais-dev.yaml
+          cmd: yq '.spec.ingresses[0]' .nais/nais-dev.yaml
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-dev.yaml
+          RESOURCE: .nais/nais-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }},version=${{ github.sha }}
 
   build-demo:
@@ -119,7 +119,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -141,7 +141,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-demo.yaml
+          RESOURCE: .nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ inputs.app }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ inputs.app }},replicas=1,branchState=alive
 
   deploy-demo-branch:
@@ -161,7 +161,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-demo.yaml
+          RESOURCE: .nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ inputs.base-path }},appname=${{ steps.slug.outputs.slug }},replicas=1,branchState=alive
 
   build-prod:
@@ -175,7 +175,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
         id: build-and-publish
         with:
           app: ${{ inputs.app }}
@@ -197,9 +197,9 @@ jobs:
       - id: get-ingress
         uses: mikefarah/yq@v4.44.1
         with:
-          cmd: yq '.spec.ingresses[0]' nais/nais-prod.yaml
+          cmd: yq '.spec.ingresses[0]' .nais/nais-prod.yaml
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: nais/nais-prod.yaml
+          RESOURCE: .nais/nais-prod.yaml
           VAR: image=${{ needs.build-prod.outputs.image }},version=${{ github.sha }}
