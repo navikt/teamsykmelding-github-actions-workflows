@@ -46,7 +46,7 @@ This reusable workflows make the following assumptions:
 
 1. There is a `Dockerfile` on root
 
-   This dockerfile NEEDS to accept the argument `ENV` (`ARG ENV`) and copy the following: `COPY nais/envs/.env.$ENV /app/.env.production`
+   This dockerfile NEEDS to accept the argument `ENV` (`ARG ENV`) and copy the following: `COPY .nais/envs/.env.$ENV /app/.env.production`
 
 2. The naiserator files are in the `nais` folder, named `nais-dev.yaml`, `nais-demo.yaml` and `nais-prod.yaml`.
 
@@ -73,7 +73,7 @@ This reusable workflows make the following assumptions:
 
    This is to support deploying branches to their own ingress.
 
-3. There needs to be a `nais/envs` folder with the following files: `.env.dev`, `.env.demo`, `.env.prod`. These envs will be available both during build and runtime.
+3. There needs to be a `.nais/envs` folder with the following files: `.env.dev`, `.env.demo`, `.env.prod`. These envs will be available both during build and runtime.
 
    Note: Normal runtime-only (e.g. backend-only) envs can still be added in the nais.yaml.
    </details>

@@ -34,8 +34,8 @@ runs:
     - name: Copy appropriate env file to root
       shell: bash
       run: |
-        echo "Copying nais/envs/.env.${{ inputs.env }}..."
-        cp nais/envs/.env.${{ inputs.env }} .env.production
+        echo "Copying .nais/envs/.env.${{ inputs.env }}..."
+        cp .nais/envs/.env.${{ inputs.env }} .env.production
     - id: yarn-build
       shell: bash
       run: yarn build
