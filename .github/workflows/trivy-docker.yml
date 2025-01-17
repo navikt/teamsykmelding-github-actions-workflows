@@ -4,6 +4,10 @@ on:
       image:
         required: true
         type: string
+      team:
+        required: false
+        type: string
+        default: teamsykmelding
 
 jobs:
   trivy-test-docker:
@@ -16,7 +20,7 @@ jobs:
         with:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          team: teamsykmelding
+          team: ${{ inputs.team }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0

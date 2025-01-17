@@ -95,6 +95,19 @@ jobs:
           RESOURCE: ${{ inputs.naisPath }}nais-prod.yaml
           VAR: image=${{ needs.build-docker.outputs.image }}
 
+  trivy-docker:
+    name: Trivy
+    permissions:
+      id-token: write
+      security-events: write
+    needs: build-docker
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@feat/kotlin-app
+    with:
+      image: ${{ needs.build-docker.outputs.image }}
+      team: tsm
+    secrets: inherit
+
+
   analyze:
     runs-on: ubuntu-latest
     steps:
