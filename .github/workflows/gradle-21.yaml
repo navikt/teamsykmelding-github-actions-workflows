@@ -101,7 +101,7 @@ jobs:
       id-token: write
       security-events: write
     needs: build-docker
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@feat/kotlin-app
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@main
     with:
       image: ${{ needs.build-docker.outputs.image }}
       team: tsm
