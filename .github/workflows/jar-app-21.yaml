@@ -52,6 +52,10 @@ jobs:
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
       - run: ./gradlew test
+      - name: Summarize tests results
+        uses: navikt/gradle-tests-summary@v1
+        if: ${{ always() }}
+
 
   build-for-dependabot:
     if: github.actor == 'dependabot[bot]'
