@@ -4,6 +4,10 @@ on:
       app:
         required: true
         type: string
+      team:
+        required: false
+        type: string
+        default: tsm
       naisPath:
         required: false
         type: string
@@ -67,7 +71,7 @@ jobs:
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
-          team: tsm
+          team: ${{ inputs.team }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
@@ -104,7 +108,7 @@ jobs:
     uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/trivy-docker.yml@main
     with:
       image: ${{ needs.build-docker.outputs.image }}
-      team: tsm
+      team: ${{ inputs.team }}
     secrets: inherit
 
 
