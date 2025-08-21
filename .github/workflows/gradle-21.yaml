@@ -16,6 +16,10 @@ on:
         required: false
         type: string
         default: gcp
+      only-dev:
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   actions: read
@@ -94,7 +98,7 @@ jobs:
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build-docker
-    if: github.ref_name == 'main'
+    if: ${{ github.ref_name == 'main' && !inputs.only-dev }}
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
