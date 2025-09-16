@@ -50,7 +50,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew installDist
 
       - name: Upload build outputs
         uses: actions/upload-artifact@v4
@@ -138,7 +138,7 @@ jobs:
           languages: kotlin
 
       - name: Build
-        run: ./gradlew build -x test
+        run: ./gradlew installDist -x test
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
