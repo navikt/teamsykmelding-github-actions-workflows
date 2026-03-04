@@ -90,6 +90,7 @@ jobs:
   trivy-docker:
     name: Trivy
     permissions:
+      contents: 'write'
       id-token: 'write'
       security-events: 'write'
     needs: build
