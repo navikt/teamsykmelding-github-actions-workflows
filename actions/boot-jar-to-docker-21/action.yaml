@@ -11,9 +11,6 @@ inputs:
   project_id:
     required: true
     type: string
-  github_token:
-    required: true
-    type: string
 outputs:
   image:
     description: "Docker image in GAR"
@@ -29,8 +26,6 @@ runs:
         ./gradlew bootJar -x test
     - name: Push docker image to GAR
       uses: nais/docker-build-push@v0
-      env:
-        ACTIONS_RUNTIME_TOKEN: ${{ inputs.github_token  }}
       id: docker-build-push
       with:
         team: teamsykmelding
