@@ -11,9 +11,6 @@ inputs:
   project_id:
     required: true
     type: string
-  github_token:
-    required: true
-    type: string
 outputs:
   image:
     description: "Docker image in GAR"
