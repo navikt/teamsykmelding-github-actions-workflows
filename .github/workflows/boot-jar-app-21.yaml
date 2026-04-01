@@ -71,8 +71,7 @@ jobs:
           app: ${{ inputs.app }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
+          
 
   trivy-docker:
     name: Trivy
