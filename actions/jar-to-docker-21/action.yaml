@@ -11,9 +11,6 @@ inputs:
   project_id:
     required: true
     type: string
-  github_token:
-    required: true
-    type: string
 outputs:
   image:
     description: "Docker image in GAR"
@@ -25,16 +22,11 @@ runs:
     - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
     - name: Build jar
       env:
-        ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
         COMMIT_SHA: ${{ github.sha }}
       shell: bash
       run: |
         ./gradlew shadowJar -x test
     - name: Setup Gradle to generate and submit dependency graphs
-      env:
-        ORG_GRADLE_PROJECT_githubUser: x-access-token
-        ORG_GRADLE_PROJECT_githubPassword: ${{ inputs.github_token }}
       uses: gradle/actions/setup-gradle@v4
       with:
         dependency-graph: generate-and-submit
