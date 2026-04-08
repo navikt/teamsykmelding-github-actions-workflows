@@ -1,0 +1,19 @@
+name: "Installs java, and typst binary, installs gradle dependencies with cache"
+description: "Installs java, and typst binary, installs gradle dependencies with cache"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
+    - run: cp $(which typst) ./typst-pdf/typst
+
+    - uses: actions/setup-java@v4
+      id: setup-java
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+        cache: "gradle"
