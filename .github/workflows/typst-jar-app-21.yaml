@@ -57,7 +57,7 @@ jobs:
     permissions:
       contents: "read"
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-typst-cached-21@main
       - run: ./gradlew test
       - name: Summarize tests results
         uses: navikt/gradle-tests-summary@v1
@@ -69,7 +69,7 @@ jobs:
     name: Build for dependabot
     runs-on: ubuntu-latest
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-typst-cached-21@main
       - name: Build jar
         shell: bash
         run: |
