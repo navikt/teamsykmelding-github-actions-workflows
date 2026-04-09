@@ -19,7 +19,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-typst-cached-21@main
+    - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-21@main
     - name: Build jar
       env:
         COMMIT_SHA: ${{ github.sha }}
