@@ -69,7 +69,7 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-docker
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-${{ inputs.cluster }}
@@ -100,7 +100,7 @@ jobs:
     needs: build-docker
     if: ${{ github.ref_name == 'main' && !inputs.only-dev }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-${{ inputs.cluster }}

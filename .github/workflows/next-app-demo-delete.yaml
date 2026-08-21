@@ -14,7 +14,7 @@ jobs:
     name: Delete branch dev-gcp
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: gacts/github-slug@v1
         id: slug
       - name: Scale down dev-gcp
