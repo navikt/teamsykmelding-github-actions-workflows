@@ -1,0 +1,33 @@
+name: "Builds a bootjar, creates a docker image and uploads it to GAR"
+description: "Builds a bootjar, creates a docker image and uploads it to GAR"
+
+inputs:
+  app:
+    required: true
+    type: string
+  identity_provider:
+    required: true
+    type: string
+  project_id:
+    required: true
+    type: string
+outputs:
+  image:
+    description: "Docker image in GAR"
+    value: ${{ steps.docker-build-push.outputs.image }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: navikt/teamsykmelding-github-actions-workflows/actions/gradle-cached-25@main
+    - name: Build bootJar
+      shell: bash
+      run: |
+        ./gradlew bootJar -x test
+    - name: Push docker image to GAR
+      uses: nais/docker-build-push@v0
+      id: docker-build-push
+      with:
+        team: teamsykmelding
+        identity_provider: ${{ inputs.identity_provider }}
+        project_id: ${{ inputs.project_id }}
