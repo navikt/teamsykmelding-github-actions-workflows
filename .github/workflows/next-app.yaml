@@ -99,7 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - id: get-ingress
-        uses: mikefarah/yq@v4.44.1
+        uses: mikefarah/yq@v4.53.6
         with:
           cmd: yq '.spec.ingresses[0]' .nais/nais-dev.yaml
       - uses: nais/deploy/actions/deploy@v2
@@ -195,7 +195,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - id: get-ingress
-        uses: mikefarah/yq@v4.44.1
+        uses: mikefarah/yq@v4.53.6
         with:
           cmd: yq '.spec.ingresses[0]' .nais/nais-prod.yaml
       - uses: nais/deploy/actions/deploy@v2
