@@ -1,7 +1,57 @@
 version: 2
+
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/actions"
-    schedule:
-      interval: "weekly"
+    directory: "/actions/boot-jar-to-docker-21"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/boot-jar-to-docker-25"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/gradle-cached-21"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/gradle-cached-25"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/jar-to-docker-21"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/jar-to-docker-25"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/next-to-docker"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/plain-jar-to-docker-21"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/plain-jar-to-docker-25"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/typst-jar-to-docker-21"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/actions/yarn-cached"
+    schedule: { interval: "weekly" }
     open-pull-requests-limit: 10
