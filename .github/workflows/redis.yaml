@@ -9,7 +9,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Deploy redis to dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLUSTER: dev-gcp
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Deploy to redis dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLUSTER: prod-gcp
