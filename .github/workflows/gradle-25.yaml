@@ -88,7 +88,7 @@ jobs:
     needs: build-docker
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-${{ inputs.cluster }}
           RESOURCE: ${{ inputs.naisPath }}nais-dev.yaml
@@ -101,7 +101,7 @@ jobs:
     if: ${{ github.ref_name == 'main' && !inputs.only-dev }}
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-${{ inputs.cluster }}
           RESOURCE: ${{ inputs.naisPath }}nais-prod.yaml
